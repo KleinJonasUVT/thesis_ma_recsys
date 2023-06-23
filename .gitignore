@@ -2,6 +2,8 @@
 *.csv
 *.nix
 *.replit
+*.lock
+*.toml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
