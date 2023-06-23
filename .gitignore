@@ -1,5 +1,7 @@
 .DS_Store
 .csv
+.nix
+.replit
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
