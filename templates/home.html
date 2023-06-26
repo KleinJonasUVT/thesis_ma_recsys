@@ -10,6 +10,10 @@
       margin-top: 50px;
       margin-bottom: 50px;
     }
+    
+    .card-with-margin {
+      margin-right: 20px;
+    }
   </style>
 </head>
 <body>
@@ -29,9 +33,10 @@
   <div class="row">
     <div class="col-2">
       <aside>
-        <h2>Filters</h2>
+        <h5>Filters</h5>
+        <br>
         <div class="dropdown" data-bs-theme="light">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonLight" data-bs-toggle="dropdown" aria-expanded="false">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButtonLight" data-bs-toggle="dropdown" aria-expanded="false">
             Degree
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonLight">
@@ -43,7 +48,7 @@
         </div>
       <br>
         <div class="dropdown" data-bs-theme="light">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonLight" data-bs-toggle="dropdown" aria-expanded="false">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButtonLight" data-bs-toggle="dropdown" aria-expanded="false">
             Block
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonLight">
@@ -55,6 +60,7 @@
         </div>
       </aside>
     </div>
+<!--Courses part-->
     <div class="col-10">
       <main>
         <h2>Courses</h2>
@@ -94,28 +100,33 @@
             </div>
           </div>
         <br>
-        <div class="recommended row">
+<!--Recommended part-->
+        <div class="row">
           <h2>Recommended courses</h2>
-          <div class="card-group w-100">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <div class="col px-0">
+              <div class="card card-with-margin">
+                <div class="card-body">
+                  <h5 class="card-title">Card title</h5>
+                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                </div>
               </div>
             </div>
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+            <div class="col px-0">
+              <div class="card card-with-margin">
+                <div class="card-body">
+                  <h5 class="card-title">Card title</h5>
+                  <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                </div>
               </div>
             </div>
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+            <div class="col px-0">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Card title</h5>
+                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                </div>
               </div>
             </div>
-          </div>
         </div>
       </main>
     </div>
