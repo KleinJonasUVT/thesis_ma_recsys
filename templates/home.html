@@ -7,16 +7,24 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      margin-top: 50px;
       margin-bottom: 50px;
     }
     
     .card-with-margin {
       margin-right: 20px;
     }
+
+    header {
+      margin-top: 50px;
+    }
+
+    a {
+    text-decoration: none;
+    }
   </style>
 </head>
 <body>
+  {% include 'navbar.html' %}
 <div class="container">
   <header>
     <div class="row">
@@ -65,12 +73,12 @@
       <main>
         <h2>Courses</h2>
           <div class="row">
-            <div class="card">
+            <a href="https://google.com" class="card">
               <div class="card-body">
                 <h5>Course number 1</h5>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
               </div>
-            </div>
+            </a>
           </div>
         <br>
           <div class="row">
@@ -132,6 +140,7 @@
     </div>
   </div>
 </div>
+  {% include 'footer.html' %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
