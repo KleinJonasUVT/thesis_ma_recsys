@@ -1,34 +1,83 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Jonas Klein</title> 
-  </head>
-  <body>
+<head>
+  <title>Tilburg University Course Catalogue</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      margin: 0 auto
+    }
+
+    .sidebar {
+      flex-basis: 20%;
+      padding: 20px;
+    }
+
+    .main-content {
+      flex-basis: 80%;
+      padding: 20px;
+    }
+
+    .recommended {
+      padding: 20px;
+    }
+
+    header {
+      font-size: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+
+    #TiU_logo {
+      max-width: 40%;
+    }
+  </style>
+</head>
+<body>
+  <header>
     <h1>Tilburg University Course Catalogue</h1>
-    <img src="https://thesismarecsys--kleinjonasuvt.repl.co/static/TiU_logo.png" width=80%>
-    <h2>Filters</h2>
-    <h4>Degree</h4>
-    <select>
-      <option value="Bachelor" selected>Bachelor</option>
-      <option value="Pre-master">Pre-master</option>
-      <option value="Master">Master</option>
-    </select>
-    <h4>Block</h4>
-    <select>
-      <option value="1" selected>1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-    </select>
-    <h2>Courses</h2>
-    <h4>Course title</h4>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-    <h4>Course title</h4>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-    <h4>Course title</h4>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-    <h4>Course title</h4>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    <img id="TiU_logo" src="https://thesismarecsys--kleinjonasuvt.repl.co/static/TiU_logo.png">
+  </header>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Filters</h2>
+      <h4>Degree</h4>
+      <select>
+        <option value="Bachelor" selected>Bachelor</option>
+        <option value="Pre-master">Pre-master</option>
+        <option value="Master">Master</option>
+      </select>
+      <h4>Block</h4>
+      <select>
+        <option value="1" selected>1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
+    </aside>
+    <div class="main-content">
+      <h2>Courses</h2>
+      <h4>Course title</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <h4>Course title</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <h4>Course title</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <h4>Course title</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    </div>
+  </div>
+  <div class="recommended">
     <h2>Recommended courses</h2>
     <h4>Course title</h4>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
@@ -36,5 +85,7 @@
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     <h4>Course title</h4>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-  </body>
+  </div>
+</body>
 </html>
+
