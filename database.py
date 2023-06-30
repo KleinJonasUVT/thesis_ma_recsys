@@ -1,41 +1,24 @@
+from sqlalchemy import create_engine
+from sqlalchemy import text
 import os
-from dotenv import load_dotenv
-import mysql.connector
 
-load_dotenv('env/.env')
+db_connection_string = os.environ['DB_CONNECTION_STRING']
 
-connection = mysql.connector.connect(
-    host=os.getenv("HOST"),
-    database=os.getenv("DATABASE"),
-    user=os.getenv("USERNAME"),
-    password=os.getenv("PASSWORD"),
-    ssl_ca=os.getenv("SSL_CERT")
+engine = create_engine(
+  db_connection_string,
+  connect_args={
+    "ssl": {
+      "ssl_ca": "/etc/ssl/cert.pem"
+    }
+  }
 )
 
-cursor = connection.cursor()
-
-# Execute a SELECT query
-query = "SELECT * FROM courses"
-cursor.execute(query)
-
-# Fetch all rows from the result
-rows = cursor.fetchall()
-
-# Get column names from the cursor description
-columns = [column[0] for column in cursor.description]
-
-# Process the fetched data
-result_dicts = []
-for row in rows:
-    result_dict = dict(zip(columns, row))
-    result_dicts.append(result_dict)
-
-# Print the result
-print(result_dicts)
-
-# Close the cursor and the connection
-cursor.close()
-connection.close()
-
-
-  
+def load_courses_from_db():
+  with engine.connect() as conn:
+    result = conn.execute(text("SELECT * FROM courses"))
+    courses = []
+    columns = result.keys()
+    for row in result:
+      result_dict = {column: value for column, value in zip(columns, row)}
+      courses.append(result_dict)
+    return courses

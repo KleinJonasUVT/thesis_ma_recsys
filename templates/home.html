@@ -21,6 +21,10 @@
     a {
     text-decoration: none;
     }
+
+    .course-details {
+    margin-bottom: 0.3em;
+    }
   </style>
 </head>
 <body>
@@ -72,42 +76,11 @@
     <div class="col-10">
       <main>
         <h2>Courses</h2>
-          <div class="row">
-            <a href="https://google.com" target="_blank" class="card">
-              <div class="card-body">
-                <h5>Course number 1</h5>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-              </div>
-            </a>
-          </div>
-        <br>
-          <div class="row">
-            <div class="card">
-              <div class="card-body">
-                <h5>Course title</h5>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-              </div>
-            </div>
-          </div>
-        <br>
-          <div class="row">
-            <div class="card">
-              <div class="card-body">
-                <h5>Course title</h5>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-              </div>
-            </div>
-          </div>
-        <br>
-          <div class="row">
-            <div class="card">
-              <div class="card-body">
-                <h5>Course title</h5>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-              </div>
-            </div>
-          </div>
-        <br>
+        <div>
+          {% for course in courses %}
+            {% include 'courseitem.html' %}
+          {% endfor %}
+        </div>
 <!--Recommended part-->
         <div class="row">
           <h2>Recommended courses</h2>
