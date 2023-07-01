@@ -22,3 +22,21 @@ def load_courses_from_db():
       result_dict = {column: value for column, value in zip(columns, row)}
       courses.append(result_dict)
     return courses
+
+def load_course_from_db(course_code):
+    with engine.connect() as conn:
+        result = conn.execute(text("SELECT * FROM courses WHERE course_code = :val"), parameters=dict(val=course_code))
+        course = []
+        columns = result.keys()
+        for row in result:
+            result_dict = {column: value for column, value in zip(columns, row)}
+            if len(row) == 0:
+                return None
+            else:
+                return result_dict
+
+
+
+
+
+
