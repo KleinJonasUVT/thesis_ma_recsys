@@ -5,17 +5,14 @@
   {% include 'bootstrap.html' %}
   <style>
     body {
+      margin-top: 50px;
       margin-bottom: 50px;
     }
     
     .card-with-margin {
       margin-right: 20px;
     }
-
-    header {
-      margin-top: 50px;
-    }
-
+    
     a {
     text-decoration: none;
     }
@@ -28,17 +25,7 @@
 <body>
   {% include 'navbar.html' %}
 <div class="container">
-  <header>
-    <div class="row">
-      <div class="col-2">
-        <img class="img-fluid" id="TiU_logo" src="https://thesismarecsys--kleinjonasuvt.repl.co/static/TiU_logo.png">
-      </div>
-      <div class="col-8">
-        <h1>Tilburg University Course Catalogue</h1>
-      </div>
-    </div>
-  </header>
-  <hr>
+  {% include 'banner.html' %}
 <!--Filter part-->
   <div class="row">
     <div class="col-2">
