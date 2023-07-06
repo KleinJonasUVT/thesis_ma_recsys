@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify
-from database import load_courses_from_db, load_course_from_db
+from database import load_courses_from_db, load_course_from_db, load_courselist_from_db
 
 app = Flask(__name__)
 
@@ -9,15 +9,27 @@ filters = {
 }
 
 @app.route("/")
-def hello_world():
-    courses = load_courses_from_db()
-    return render_template('home.html', courses=courses, filters=filters)
+def show_courselist_first():
+  courselist = load_courselist_from_db('1')
+  return render_template('home.html', courselist=courselist, filters=filters)
+
+# def hello_world():
+#    courses = load_courses_from_db()
+#    return render_template('home.html', courses=courses, #filters=filters)
 
 
 @app.route("/api/courses")
 def list_courses():
   courses = load_courses_from_db()
   return jsonify(courses)
+
+@app.route("/<courselist_page_number>")
+def show_courselist(courselist_page_number):
+  courselist = load_courselist_from_db(courselist_page_number)
+  if not courselist:
+    return "Not Found", 404
+  else:
+    return render_template('home.html', courselist=courselist, filters=filters)
 
 @app.route("/course/<course_code>")
 def show_course(course_code):

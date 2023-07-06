@@ -35,6 +35,17 @@ def load_course_from_db(course_code):
             else:
                 return result_dict
 
+def load_courselist_from_db(courselist_page_number):
+    with engine.connect() as conn:
+        result = conn.execute(text("SELECT * FROM (SELECT *, FLOOR((ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) + 1) / 2) AS pair_num FROM courses) AS numbered_rows WHERE pair_num = :val"), parameters=dict(val=courselist_page_number))
+    courselist = []
+    columns = result.keys()
+    for row in result:
+      result_dict = {column: value for column, value in zip(columns, row)}
+      courselist.append(result_dict)
+    return courselist
+
+
 
 
 
