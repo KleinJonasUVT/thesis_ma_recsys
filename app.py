@@ -11,7 +11,10 @@ filters = {
 @app.route("/")
 def show_courselist_first():
   courselist = load_courselist_from_db('1')
-  return render_template('home.html', courselist=courselist, filters=filters)
+  next_page_number = 2
+  next_courselist = load_courselist_from_db(str(2))
+  show_next_button = bool(next_courselist)
+  return render_template('home.html', courselist=courselist, filters=filters, show_next_button=show_next_button, next_page = '2')
 
 # def hello_world():
 #    courses = load_courses_from_db()
@@ -26,10 +29,16 @@ def list_courses():
 @app.route("/<courselist_page_number>")
 def show_courselist(courselist_page_number):
   courselist = load_courselist_from_db(courselist_page_number)
+  next_page = int(courselist_page_number) + 1
+  next_courselist = load_courselist_from_db(str(next_page))
+  show_next_button = bool(next_courselist)
+  prev_page = int(courselist_page_number) - 1
+  prev_courselist = load_courselist_from_db(prev_page)
+  show_prev_button = bool(prev_courselist)
   if not courselist:
     return "Not Found", 404
   else:
-    return render_template('home.html', courselist=courselist, filters=filters)
+    return render_template('home.html', courselist=courselist, filters=filters, show_next_button=show_next_button, show_prev_button=show_prev_button, next_page=next_page, prev_page=prev_page)
 
 @app.route("/course/<course_code>")
 def show_course(course_code):

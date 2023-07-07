@@ -24,6 +24,14 @@
       background-color: #006094;
       color: white;
     }
+
+    .next-page {
+      text-align: right;
+    }
+
+    .prev-page {
+      text-align: left;
+    }
   </style>
 </head>
 <body>
@@ -51,7 +59,17 @@
               {% include 'courseitem.html' %}
             {% endfor %}
           </div>
+          {% if show_prev_button %}
+          <div class="prev-page">
+            <a href="/{{ prev_page }}">Previous</a>
+          </div>
+          {% endif %}
           
+          {% if show_next_button %}
+          <div class="next-page">
+            <a href="/{{ next_page }}">Next</a>
+          </div>
+          {% endif %}
           <!-- Recommended part -->
           <div class="row mt-4">
             <h2>Recommended courses</h2>
