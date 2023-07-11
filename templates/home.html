@@ -24,72 +24,6 @@
       background-color: #006094;
       color: white;
     }
-
-    .arrow {
-      cursor: pointer;
-      height: 30px;
-      position: relative;
-      top: 50%;
-      transition: transform 0.1s;
-      width: 50px;
-      left: 900px; /* Position arrow on the right side */
-    }
-    
-    .arrow-top,
-    .arrow-bottom {
-      background-color: #666;
-      height: 2px;
-      position: absolute;
-      top: 50%;
-      width: 50%;
-    }
-    
-    .arrow-top:after,
-    .arrow-bottom:after {
-      background-color: #fff;
-      content: "";
-      height: 50%;
-      position: absolute;
-      top: 0;
-      transition: all 0.15s;
-    }
-    
-    .arrow-top {
-      transform: rotate(45deg);
-      transform-origin: bottom right;
-    }
-    
-    .arrow-top:after {
-      left: 100%;
-      right: 0;
-      transition-delay: 0s;
-    }
-    
-    .arrow-bottom {
-      transform: rotate(-45deg);
-      transform-origin: top right;
-    }
-    
-    .arrow-bottom:after {
-      left: 0;
-      right: 100%;
-      transition-delay: 0.15s;
-    }
-    
-    .arrow:hover .arrow-top:after {
-      left: 0;
-      transition-delay: 0.15s;
-    }
-    
-    .arrow:hover .arrow-bottom:after {
-      right: 0;
-      transition-delay: 0s;
-    }
-    
-    .arrow:active {
-      transform: scale(0.9); /* Remove translateX(-50%) */
-    }
-
   </style>
 </head>
 <body>
@@ -121,10 +55,10 @@
             <div class="row">
               {% if show_prev_button %}
                 {% if show_next_button %}
-                  <a href="/{{ next_page }}" class="arrow">
-                    <div class="arrow-top"></div>
-                    <div class="arrow-bottom"></div>
-                  </a>
+                  <div class="button-row">
+                    {% include 'prev_button.html' %}
+                    {% include 'next_button.html' %}
+                  </div>
                   {% for page in range(1, max_pages) %}
                   {% endfor %}
                 {% else %}
