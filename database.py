@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy import text
 import os
+import math
 
 db_connection_string = os.environ['DB_CONNECTION_STRING']
 
@@ -37,13 +38,20 @@ def load_course_from_db(course_code):
 
 def load_courselist_from_db(courselist_page_number):
     with engine.connect() as conn:
-        result = conn.execute(text("SELECT * FROM (SELECT *, FLOOR((ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) + 1) / 2) AS pair_num FROM courses) AS numbered_rows WHERE pair_num = :val"), parameters=dict(val=courselist_page_number))
+        result = conn.execute(text("SELECT * FROM (SELECT *, FLOOR((ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) + 2) / 3) AS pair_num FROM courses) AS numbered_rows WHERE pair_num = :val"), parameters=dict(val=courselist_page_number))
     courselist = []
     columns = result.keys()
     for row in result:
       result_dict = {column: value for column, value in zip(columns, row)}
       courselist.append(result_dict)
     return courselist
+
+def get_max_courselist_pages():
+    with engine.connect() as conn:
+        result = conn.execute(text("SELECT COUNT(*) FROM courses"))
+        total_rows = result.scalar()
+    max_pages = math.ceil((total_rows + 2) / 3)
+    return max_pages
 
 
 

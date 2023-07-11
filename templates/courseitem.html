@@ -1,10 +1,56 @@
+<style>
+  .rating:not(:checked) > input {
+    position: absolute;
+    appearance: none;
+  }
+  
+  .rating:not(:checked) > label {
+    float: right;
+    cursor: pointer;
+    font-size: 20px;
+    color: #666;
+  }
+  
+  .rating:not(:checked) > label:before {
+    content: '★';
+  }
+  
+  .rating > input:checked + label:hover,
+  .rating > input:checked + label:hover ~ label,
+  .rating > input:checked ~ label:hover,
+  .rating > input:checked ~ label:hover ~ label,
+  .rating > label:hover ~ input:checked ~ label {
+    color: #e58e09;
+  }
+  
+  .rating:not(:checked) > label:hover,
+  .rating:not(:checked) > label:hover ~ label {
+    color: #ff9e0b;
+  }
+  
+  .rating > input:checked ~ label {
+    color: #ffa723;
+  }
+</style>
 <div class="row">
-            <a href="/course/{{course['course_code']}}" target="_blank" class="card">
-              <div class="card-body">
-                <h5>{{ course['course_name'] }}</h5>
-                <p class="course-details">Course code: {{ course['course_code'] }}</p>
-                <p class="course-details">Language: {{ course['language'] }}</p>
-              </div>
-            </a>
-          </div>
-          <br>
+  <a href="/course/{{ course['course_code'] }}" target="_blank" class="card">
+    <div class="card-body">
+      <div class="rating">
+        <input type="radio" id="star5-{{ course['course_code'] }}" name="rate-{{ course['course_code'] }}" value="5">
+        <label for="star5-{{ course['course_code'] }}" title="text"></label>
+        <input type="radio" id="star4-{{ course['course_code'] }}" name="rate-{{ course['course_code'] }}" value="4">
+        <label for="star4-{{ course['course_code'] }}" title="text"></label>
+        <input type="radio" id="star3-{{ course['course_code'] }}" name="rate-{{ course['course_code'] }}" value="3">
+        <label for="star3-{{ course['course_code'] }}" title="text"></label>
+        <input type="radio" id="star2-{{ course['course_code'] }}" name="rate-{{ course['course_code'] }}" value="2">
+        <label for="star2-{{ course['course_code'] }}" title="text"></label>
+        <input type="radio" id="star1-{{ course['course_code'] }}" name="rate-{{ course['course_code'] }}" value="1">
+        <label for="star1-{{ course['course_code'] }}" title="text"></label>
+      </div>        
+      <h5>{{ course['course_name'] }}</h5>
+      <p class="course-details">Course code: {{ course['course_code'] }}</p>
+      <p class="course-details">Language: {{ course['language'] }}</p>
+    </div>
+  </a>
+</div>
+<br>
