@@ -1,0 +1,19 @@
+<style>
+  .row {
+    margin-bottom: 20px;
+    margin-left: 1px;
+  }
+</style>
+<h2>Recommended courses</h2>
+    {% for rec in range(1,4) %}
+      <div class="row">
+        <div class="col px-0">
+          <div class="card card-with-margin">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}

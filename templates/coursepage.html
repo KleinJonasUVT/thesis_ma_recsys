@@ -17,11 +17,23 @@
   {% include 'navbar.html' %}
   <div class="container">
     <div class="row mt-4">
-      <div class="col">
+      <div class="col-8">
         <h2>{{ course['course_name'] }}</h2>
+        <br>
+        <h5>Course code</h5>
+        <p class="course-details">{{ course['course_code'] }}</p>
+        <h5>Language:</h5>
+        <p class="course-details">{{ course['language'] }}</p>
+        <h5>Aims</h4>
+        <p class="course-aims">{{ course['aims'] }}</p>
+        <h5>Content</h4>
+        <p class="course-aims">{{ course['content'] }}</p>
+      </div>
+      <div class="col-4">
+        {% include 'rec_coursepage.html' %}
       </div>
     </div>
-    
+  </div>
     {% include 'footer.html' %}
   </div>
 </body>
