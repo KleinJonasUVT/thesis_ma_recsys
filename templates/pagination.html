@@ -1,0 +1,97 @@
+<style>
+  button.page {
+    cursor: pointer;
+    font-weight: 700;
+    font-family: Helvetica,"sans-serif";
+    transition: all .2s;
+    padding: 7.8px 16px;
+    background: #006094;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: white;
+    outline: none;
+    border: 1px solid white;
+    }
+          
+  button.page:hover {
+    background: #006094;
+    }
+</style>
+{% if max_pages < 8 %}
+  {% for page in range(1, max_pages + 1) %}
+    <a href="/{{ page }}">
+      <button class="page">
+        <span>{{ page }}</span>
+      </button>
+    </a>
+  {% endfor %}
+{% elif max_pages > 7 %}
+  {% if is_less_than_5 %}
+        {% for page in range (1, 6) %}
+          <a href="/{{ page }}" class="arrow">
+            <button class="page">
+              <span>{{ page }}</span>
+            </button>
+          </a>
+        {% endfor %}
+        <div class="arrow">
+          <button class="page">
+            <span>...</span>
+          </button>
+        </div>
+        <a href="/{{ max_pages }}">
+          <button class="page">
+            <span>{{ max_pages }}</span>
+          </button>
+        </a>
+  {% elif is_more_than_4 and is_more_than_3_to_end %}
+        <a href="/1">
+          <button class="page">
+            <span>1</span>
+          </button>
+        </a>
+        <div>
+          <button class="page">
+            <span>...</span>
+          </button>
+        </div>
+        {% for page in range(courselist_page_number - 1, courselist_page_number + 2) %}
+          <a href="/{{ page }}">
+            <button class="page">
+              <span>{{ page }}</span>
+            </button>
+          </a>
+        {% endfor %}
+          <div>
+            <button class="page">
+              <span>...</span>
+            </button>
+          </div>
+          <a href="/{{ max_pages }}">
+            <button class="page">
+              <span>{{ max_pages }}</span>
+            </button>
+          </a>
+  {% elif is_less_than_4_to_end %}
+    <a href="/1">
+      <button class="page">
+        <span>1</span>
+      </button>
+    </a>
+    <div>
+      <button class="page">
+        <span>...</span>
+      </button>
+    </div>
+    {% for page in range(max_pages - 4, max_pages + 1) %}
+          <a href="/{{ page }}">
+            <button class="page">
+              <span>{{ page }}</span>
+            </button>
+          </a>
+    {% endfor %}
+  {% endif %}
+{% endif %}
+  

@@ -24,6 +24,11 @@
       background-color: #006094;
       color: white;
     }
+    
+    .button-row {
+        display: flex;
+        justify-content: center;
+    }
   </style>
 </head>
 <body>
@@ -53,35 +58,11 @@
           </div>
           <div>
             <div class="row">
-              {% if show_prev_button %}
-                {% if show_next_button %}
-                  <div class="button-row">
-                    {% include 'prev_button.html' %}
-                    {% include 'next_button.html' %}
-                  </div>
-                  {% for page in range(1, max_pages) %}
-                  {% endfor %}
-                {% else %}
-                  <a href="/{{ next_page }}" class="arrow">
-                    <div class="arrow-top"></div>
-                    <div class="arrow-bottom"></div>
-                  </a>
-                  {% for page in range(1, max_pages) %}
-                  {% endfor %}
-                {% endif %}
-              {% else %}
-                {% if show_next_button %}
-                  <a href="/{{ next_page }}" class="arrow">
-                    <div class="arrow-top"></div>
-                    <div class="arrow-bottom"></div>
-                  </a>
-                  {% for page in range(1, max_pages) %}
-                  {% endfor %}
-                {% else %}
-                  {% for page in range(1, max_pages) %}
-                  {% endfor %}
-                {% endif %}
-              {% endif %}
+              <div class="button-row">
+                {% include 'prev_button.html' %}
+                {% include 'pagination.html' %}
+                {% include 'next_button.html' %}
+              </div>
             </div>
           </div>
           

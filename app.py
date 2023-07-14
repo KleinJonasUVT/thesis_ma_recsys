@@ -18,7 +18,9 @@ def show_courselist_first():
   next_page_number = 2
   next_courselist = load_courselist_from_db(str(2))
   show_next_button = bool(next_courselist)
-  return render_template('home.html', courselist=courselist, filters=filters, show_next_button=show_next_button, next_page = '2', max_pages=max_pages)
+  courselist_page_number=1
+  is_less_than_5 = int(courselist_page_number) < 5
+  return render_template('home.html', courselist=courselist, filters=filters, show_next_button=show_next_button, next_page = '2', max_pages=max_pages, courselist_page_number=courselist_page_number, is_less_than_5=is_less_than_5)
 
 @app.route("/api/courses")
 def list_courses():
@@ -35,10 +37,15 @@ def show_courselist(courselist_page_number):
   prev_page = int(courselist_page_number) - 1
   prev_courselist = load_courselist_from_db(prev_page)
   show_prev_button = bool(prev_courselist)
+  courselist_page_number=int(courselist_page_number)
+  is_less_than_5 = int(courselist_page_number) < 5
+  is_more_than_4 = int(courselist_page_number) > 4
+  is_more_than_3_to_end = int(max_pages - courselist_page_number) > 3
+  is_less_than_4_to_end = int(max_pages - courselist_page_number) < 4
   if not courselist:
     return "Not Found", 404
   else:
-    return render_template('home.html', courselist=courselist, filters=filters, show_next_button=show_next_button, show_prev_button=show_prev_button, next_page=next_page, prev_page=prev_page, max_pages=max_pages)
+    return render_template('home.html', courselist=courselist, filters=filters, show_next_button=show_next_button, show_prev_button=show_prev_button, next_page=next_page, prev_page=prev_page, max_pages=max_pages, courselist_page_number=courselist_page_number, is_less_than_5=is_less_than_5, is_more_than_4=is_more_than_4, is_more_than_3_to_end=is_more_than_3_to_end, is_less_than_4_to_end=is_less_than_4_to_end)
 
 @app.route("/course/<course_code>")
 def show_course(course_code):
