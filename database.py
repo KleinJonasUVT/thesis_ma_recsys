@@ -38,7 +38,7 @@ def load_course_from_db(course_code):
 
 def load_courselist_from_db(courselist_page_number):
     with engine.connect() as conn:
-        result = conn.execute(text("SELECT * FROM (SELECT *, (ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1) DIV 2 + 1 AS pair_num FROM courses) AS numbered_rows WHERE pair_num = :val;"), parameters=dict(val=courselist_page_number))
+        result = conn.execute(text("SELECT * FROM (SELECT *, (ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1) DIV 3 + 1 AS pair_num FROM courses) AS numbered_rows WHERE pair_num = :val;"), parameters=dict(val=courselist_page_number))
     courselist = []
     columns = result.keys()
     for row in result:
@@ -50,8 +50,30 @@ def get_max_courselist_pages():
     with engine.connect() as conn:
         result = conn.execute(text("SELECT COUNT(*) FROM courses"))
         total_rows = result.scalar()
-    max_pages = math.floor((total_rows - 1) / 2) + 1
+    max_pages = math.floor((total_rows - 1) / 3) + 1
     return max_pages
+
+def add_rating_to_db(course_code, data):
+    with engine.connect() as conn:
+        existing_rating = conn.execute(
+            text("SELECT course_code FROM ratings WHERE course_code = :course_code"),
+            {"course_code": course_code}
+        ).fetchone()
+      
+        if existing_rating:
+            conn.execute(
+                text("UPDATE ratings SET rating = :rating WHERE course_code = :course_code"),
+                {"course_code": course_code, "rating": data['rate']}
+            )
+        else:
+            conn.execute(
+                text("INSERT INTO ratings (course_code, rating) VALUES (:course_code, :rating)"),
+                {"course_code": course_code, "rating": data['rate']}
+            )
+
+
+  
+  
 
 
 

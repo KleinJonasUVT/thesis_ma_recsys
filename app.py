@@ -1,8 +1,5 @@
-from flask import Flask, render_template, jsonify
-from database import load_courses_from_db, load_course_from_db, load_courselist_from_db, get_max_courselist_pages
-from sqlalchemy import create_engine
-from sqlalchemy import text
-import os
+from flask import Flask, render_template, jsonify, request
+from database import load_courses_from_db, load_course_from_db, load_courselist_from_db, get_max_courselist_pages, add_rating_to_db
 
 app = Flask(__name__)
 
@@ -55,6 +52,12 @@ def show_course(course_code):
   else:
     return render_template('coursepage.html',
                         course=course)
+
+@app.route("/course/<course_code>/rating", methods=['POST'])
+def rating_course(course_code):
+    data = request.form
+    add_rating_to_db(course_code, data)
+    return jsonify(data)
 
 if __name__ == "__main__":
   app.run(host='0.0.0.0', debug=True)
