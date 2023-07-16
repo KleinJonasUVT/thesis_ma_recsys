@@ -38,34 +38,18 @@
       <div class="card-body">
         <form id="rating-form" action="/course/{{ course['course_code'] }}/rating" method="post">
   <div class="rating">
-    <input type="radio" id="star5-{{ course['course_code'] }}" name="rate" value="5">
+    <input type="radio" id="star5-{{ course['course_code'] }}" name="rate" value="5" onchange="this.form.submit()">
     <label for="star5-{{ course['course_code'] }}" title="text"></label>
-    <input type="radio" id="star4-{{ course['course_code'] }}" name="rate" value="4">
+    <input type="radio" id="star4-{{ course['course_code'] }}" name="rate" value="4" onchange="this.form.submit()">
     <label for="star4-{{ course['course_code'] }}" title="text"></label>
-    <input type="radio" id="star3-{{ course['course_code'] }}" name="rate" value="3">
+    <input type="radio" id="star3-{{ course['course_code'] }}" name="rate" value="3" onchange="this.form.submit()">
     <label for="star3-{{ course['course_code'] }}" title="text"></label>
-    <input type="radio" id="star2-{{ course['course_code'] }}" name="rate" value="2">
+    <input type="radio" id="star2-{{ course['course_code'] }}" name="rate" value="2" onchange="this.form.submit()">
     <label for="star2-{{ course['course_code'] }}" title="text"></label>
-    <input type="radio" id="star1-{{ course['course_code'] }}" name="rate" value="1">
+    <input type="radio" id="star1-{{ course['course_code'] }}" name="rate" value="1" onchange="this.form.submit()">
     <label for="star1-{{ course['course_code'] }}" title="text"></label>
   </div>
 </form>
-<script>
-  // Get the form element
-  const form = document.getElementById('rating-form');
-
-  // Add event listener to the parent div, and handle the click events using event delegation
-  form.addEventListener('click', (event) => {
-    const clickedElement = event.target;
-    if (clickedElement.matches('input[type="radio"]')) {
-      // Add 'rated' class to the parent div when a rating is selected
-      clickedElement.closest('.rating').classList.add('rated');
-
-      // Submit the form
-      form.submit();
-    }
-  });
-</script>
       <h5>{{ course['course_name'] }}</h5>
       <p class="course-details">Course code: {{ course['course_code'] }}</p>
       <p class="course-details">Language: {{ course['language'] }}</p>
