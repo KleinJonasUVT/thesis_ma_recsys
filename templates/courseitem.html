@@ -32,22 +32,54 @@
   .rating > input:checked ~ label ~ label {
     color: #ffa723;
   }
+
+  .rating-message {
+    font-size: smaller;
+    float: right;
+  }
 </style>
-  <div class="row">
-    <a href="/course/{{ course['course_code'] }}" target="_blank" class="card">
-      <div class="card-body">
-        <form id="rating-form" action="/course/{{ course['course_code'] }}/rating" method="post">
-  <div class="rating">
-    {% for star in range(5, 0, -1) %}
-      <input type="radio" id="star{{ star }}-{{ course['course_code'] }}" name="rate" value="{{ star }}" onchange="this.form.submit()" onclick="toggleNotification()" {% if rating_db[course['course_code']] == star %}checked{% endif %}>
-      <label for="star{{ star }}-{{ course['course_code'] }}" title="text"></label>
-    {% endfor %}
-  </div>
-</form>
-      <h5>{{ course['course_name'] }}</h5>
-      <p class="course-details">Course code: {{ course['course_code'] }}</p>
-      <p class="course-details">Language: {{ course['language'] }}</p>
+
+<div class="row">
+  <a href="/course/{{ course['course_code'] }}" target="_blank" class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-8">
+          <h5>{{ course['course_name'] }}</h5>
+          <p class="course-details">Course code: {{ course['course_code'] }}</p>
+          <p class="course-details">Language: {{ course['language'] }}</p>
+        </div>
+        <div class="col-4">
+          <div class='row'>
+            <form id="rating-form" action="/course/{{ course['course_code'] }}/rating" method="post">
+              <div class="rating">
+                {% for star in range(5, 0, -1) %}
+                <input
+                  type="radio"
+                  id="star{{ star }}-{{ course['course_code'] }}"
+                  name="rate"
+                  value="{{ star }}"
+                  onchange="this.form.submit()"
+                  onclick="toggleNotification()"
+                  {% if rating_db[course['course_code']] == star %}checked{% endif %}
+                >
+                <label for="star{{ star }}-{{ course['course_code'] }}" title="text"></label>
+                {% endfor %}
+              </div>
+            </form>
+          </div>
+          <div class='row'>
+            <div class="rating-details">
+              {% if rating_db[course['course_code']] > 1 %}
+              <p class="rating-message">You gave this course {{ rating_db[course['course_code']] }} stars!</p>
+              {% elif rating_db[course['course_code']] == 1 %}
+              <p class="rating-message">You gave this course {{ rating_db[course['course_code']] }} star!</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </a>
 </div>
 <br>
+
