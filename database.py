@@ -14,6 +14,7 @@ engine = create_engine(
   }
 )
 
+#Retrieving data from SQL
 def load_courses_from_db():
   with engine.connect() as conn:
     result = conn.execute(text("SELECT * FROM courses"))
@@ -53,6 +54,17 @@ def get_max_courselist_pages():
     max_pages = math.floor((total_rows - 1) / 3) + 1
     return max_pages
 
+def get_rating_from_db(course_code):
+    with engine.connect() as conn:
+        result = conn.execute(text("SELECT rating FROM ratings WHERE course_code = :val"), parameters=dict(val=course_code))
+        rating_row = result.fetchone()
+        if rating_row is not None:
+            rating = rating_row[0]
+            return rating
+        else:
+            return 0
+
+#Adding data to SQL
 def add_rating_to_db(course_code, data):
     with engine.connect() as conn:
         existing_rating = conn.execute(

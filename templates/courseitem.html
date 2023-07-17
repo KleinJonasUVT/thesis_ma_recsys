@@ -38,16 +38,10 @@
       <div class="card-body">
         <form id="rating-form" action="/course/{{ course['course_code'] }}/rating" method="post">
   <div class="rating">
-    <input type="radio" id="star5-{{ course['course_code'] }}" name="rate" value="5" onchange="this.form.submit()">
-    <label for="star5-{{ course['course_code'] }}" title="text"></label>
-    <input type="radio" id="star4-{{ course['course_code'] }}" name="rate" value="4" onchange="this.form.submit()">
-    <label for="star4-{{ course['course_code'] }}" title="text"></label>
-    <input type="radio" id="star3-{{ course['course_code'] }}" name="rate" value="3" onchange="this.form.submit()">
-    <label for="star3-{{ course['course_code'] }}" title="text"></label>
-    <input type="radio" id="star2-{{ course['course_code'] }}" name="rate" value="2" onchange="this.form.submit()">
-    <label for="star2-{{ course['course_code'] }}" title="text"></label>
-    <input type="radio" id="star1-{{ course['course_code'] }}" name="rate" value="1" onchange="this.form.submit()">
-    <label for="star1-{{ course['course_code'] }}" title="text"></label>
+    {% for star in range(5, 0, -1) %}
+      <input type="radio" id="star{{ star }}-{{ course['course_code'] }}" name="rate" value="{{ star }}" onchange="this.form.submit()" onclick="toggleNotification()" {% if rating_db[course['course_code']] == star %}checked{% endif %}>
+      <label for="star{{ star }}-{{ course['course_code'] }}" title="text"></label>
+    {% endfor %}
   </div>
 </form>
       <h5>{{ course['course_name'] }}</h5>
