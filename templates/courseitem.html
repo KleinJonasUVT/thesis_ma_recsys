@@ -59,7 +59,6 @@
                   name="rate"
                   value="{{ star }}"
                   onchange="this.form.submit()"
-                  onclick="toggleNotification()"
                   {% if rating_db[course['course_code']] == star %}checked{% endif %}
                 >
                 <label for="star{{ star }}-{{ course['course_code'] }}" title="text"></label>
