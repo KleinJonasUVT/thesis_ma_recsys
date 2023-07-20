@@ -1,17 +1,38 @@
+<style>
+  .dropdown-item-active {
+    background-color: #f8f9fa;
+    font-weight: bold;
+  }
+</style>
 <div class="dropdown" data-bs-theme="light">
   <button class="btn custom-button dropdown-toggle" type="button" id="dropdownMenuButtonLight{{ filter_name }}" data-bs-toggle="dropdown" aria-expanded="false">
-      {{ filter_name }}
+    {{ filter_name }}
   </button>
   <form id="rating-form" action="/filter" method="post">
     <input type="hidden" name="filter_name" value="{{ filter_name }}">
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonLight{{ filter_name }}">
+      {% set selected_value = filter_db.get(filter_name) %}
       {% for item in filters[filter_name] %}
-        <li><button name="{{ filter_name }}" value="{{ item }}" type="submit" class="dropdown-item">{{ item }}</button></li>
+        {% if item == selected_value %}
+          <li><button name="{{ filter_name }}" value="{{ item }}" type="submit" class="dropdown-item active">{{ item }}</button></li>
+        {% else %}
+          <li><button name="{{ filter_name }}" value="{{ item }}" type="submit" class="dropdown-item">{{ item }}</button></li>
+        {% endif %}
       {% endfor %}
     </ul>
   </form>
 </div>
 <br>
+
+
+
+
+
+
+
+
+
+
 
 
 

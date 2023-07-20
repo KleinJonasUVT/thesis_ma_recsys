@@ -79,7 +79,8 @@ def filter():
     filter_name = request.form['filter_name']
     filter_value = request.form[filter_name]
     add_filter_to_db(filter_name, filter_value)
-    return jsonify(filter_value)
+    previous_page = request.referrer
+    return redirect(previous_page)
 
 #redirect(url_for('show_courselist_first'))
 
