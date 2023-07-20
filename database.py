@@ -38,20 +38,49 @@ def load_course_from_db(course_code):
                 return result_dict
 
 def load_courselist_from_db(courselist_page_number):
+    filters = get_filter_from_db()  # Retrieve filter dictionary
+    filter_conditions = []
+    filter_params = {}
+    for filter_key, filter_value in filters.items():
+        filter_param_name = f"filter_{filter_key}"
+        filter_conditions.append(f"{filter_key} = :{filter_param_name}")
+        filter_params[filter_param_name] = filter_value
+
+    filter_sql = " AND ".join(filter_conditions)
+
+    query = text(
+        f"SELECT * FROM (SELECT *, (ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1) DIV 3 + 1 AS pair_num FROM courses WHERE {filter_sql}) AS numbered_rows WHERE pair_num = :val;"
+    )
+
     with engine.connect() as conn:
-        result = conn.execute(text("SELECT * FROM (SELECT *, (ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1) DIV 3 + 1 AS pair_num FROM courses) AS numbered_rows WHERE pair_num = :val;"), parameters=dict(val=courselist_page_number))
+        result = conn.execute(query, parameters={**filter_params, "val": courselist_page_number})
+
     courselist = []
     columns = result.keys()
     for row in result:
-      result_dict = {column: value for column, value in zip(columns, row)}
-      courselist.append(result_dict)
+        result_dict = {column: value for column, value in zip(columns, row)}
+        courselist.append(result_dict)
     return courselist
 
-
 def get_max_courselist_pages():
+    filters = get_filter_from_db()  # Retrieve filter dictionary
+    filter_conditions = []
+    filter_params = {}
+    for filter_key, filter_value in filters.items():
+        filter_param_name = f"filter_{filter_key}"
+        filter_conditions.append(f"{filter_key} = :{filter_param_name}")
+        filter_params[filter_param_name] = filter_value
+
+    filter_sql = " AND ".join(filter_conditions)
+
+    query = text(
+        f"SELECT COUNT(*) FROM courses WHERE {filter_sql};"
+    )
+
     with engine.connect() as conn:
-        result = conn.execute(text("SELECT COUNT(*) FROM courses"))
+        result = conn.execute(query, parameters=filter_params)
         total_rows = result.scalar()
+
     max_pages = math.floor((total_rows - 1) / 3) + 1
     return max_pages
 
@@ -64,6 +93,16 @@ def get_rating_from_db(course_code):
             return rating
         else:
             return 0
+
+def get_filter_from_db():
+    with engine.connect() as conn:
+      result = conn.execute(text("SELECT filter, filter_value FROM filters;"))
+      filter_dict = {}
+      for row in result:
+        filter, filter_value = row
+        filter_dict[filter] = filter_value
+
+      return filter_dict
 
 #Adding data to SQL
 def add_rating_to_db(course_code, data):
