@@ -47,6 +47,7 @@ def load_courselist_from_db(courselist_page_number):
       courselist.append(result_dict)
     return courselist
 
+
 def get_max_courselist_pages():
     with engine.connect() as conn:
         result = conn.execute(text("SELECT COUNT(*) FROM courses"))
@@ -82,6 +83,27 @@ def add_rating_to_db(course_code, data):
                 text("INSERT INTO ratings (course_code, rating) VALUES (:course_code, :rating)"),
                 {"course_code": course_code, "rating": data['rate']}
             )
+
+def add_filter_to_db(filter_name, filter_value):
+    with engine.connect() as conn:
+        existing_rating = conn.execute(
+            text("SELECT filter_value FROM filters WHERE filter = :filter"),
+            {"filter": filter_name}
+        ).fetchone()
+      
+        if existing_rating:
+            conn.execute(
+                text("UPDATE filters SET filter_value = :filter_value WHERE filter = :filter"),
+                {"filter": filter_name, "filter_value": filter_value}
+            )
+        else:
+            conn.execute(
+                text("INSERT INTO filters (filter, filter_value) VALUES (:filter, :filter_value)"),
+                {"filter": filter_name, "filter_value": filter_value}
+            )
+
+
+
 
 
   

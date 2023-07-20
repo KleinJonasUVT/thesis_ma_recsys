@@ -41,7 +41,7 @@
         <aside>
           <h5>Filters</h5>
           <br>
-          {% for key in filters.keys() %}
+          {% for filter_name in filters.keys() %}
             {% include 'filter.html' %}
           {% endfor %}
         </aside>
