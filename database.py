@@ -125,12 +125,12 @@ def add_rating_to_db(course_code, data):
 
 def add_filter_to_db(filter_name, filter_value):
     with engine.connect() as conn:
-        existing_rating = conn.execute(
+        existing_filter = conn.execute(
             text("SELECT filter_value FROM filters WHERE filter = :filter"),
             {"filter": filter_name}
         ).fetchone()
       
-        if existing_rating:
+        if existing_filter:
             conn.execute(
                 text("UPDATE filters SET filter_value = :filter_value WHERE filter = :filter"),
                 {"filter": filter_name, "filter_value": filter_value}
