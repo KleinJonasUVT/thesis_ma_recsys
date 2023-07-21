@@ -97,12 +97,10 @@ def get_rating_from_db(course_code):
 def get_filter_from_db():
     with engine.connect() as conn:
       result = conn.execute(text("SELECT filter, filter_value FROM filters;"))
-      filter_dict = {}
-      for row in result:
-        filter, filter_value = row
-        filter_dict[filter] = filter_value
+      filters = cursor.fetchall()
+      filters_dict = {row[0]: row[1] for row in results}?
 
-      return filter_dict
+      return filters_dict
 
 #Adding data to SQL
 def add_rating_to_db(course_code, data):
@@ -126,9 +124,7 @@ def add_rating_to_db(course_code, data):
 def add_filter_to_db(filter_name, filter_value):
     with engine.connect() as conn:
         existing_filter = conn.execute(
-            text("SELECT filter_value FROM filters WHERE filter = :filter"),
-            {"filter": filter_name}
-        ).fetchone()
+            text("SELECT filter_value FROM filters WHERE filter = :filter"), {"filter": filter_name})
       
         if existing_filter:
             conn.execute(
