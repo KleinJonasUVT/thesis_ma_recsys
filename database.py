@@ -38,7 +38,7 @@ def load_course_from_db(course_code):
                 return result_dict
 
 def load_courselist_from_db(courselist_page_number):
-    filters = get_filter_from_db()  # Retrieve filter dictionary
+    filters = get_filter_from_db()
     filter_conditions = []
     filter_params = {}
     for filter_key, filter_value in filters.items():
@@ -97,8 +97,8 @@ def get_rating_from_db(course_code):
 def get_filter_from_db():
     with engine.connect() as conn:
       result = conn.execute(text("SELECT filter, filter_value FROM filters;"))
-      filters = cursor.fetchall()
-      filters_dict = {row[0]: row[1] for row in results}?
+      filters = result.fetchall()
+      filters_dict = {row[0]: row[1] for row in filters}
 
       return filters_dict
 

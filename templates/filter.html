@@ -11,10 +11,9 @@
   <form id="rating-form" action="/filter" method="post">
     <input type="hidden" name="filter_name" value="{{ filter_name }}">
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonLight{{ filter_name }}">
-      {% set selected_value = filter_db.get(filter_name) %}
       {% for item in filters[filter_name] %}
-        {% if item == selected_value %}
-          <li><button name="{{ filter_name }}" value="{{ item }}" type="submit" class="dropdown-item active">{{ item }}</button></li>
+        {% if item == filters_dict.get(filter_name) %}
+          <li><button name="{{ filter_name }}" value="{{ item }}" type="submit" class="dropdown-item dropdown-item-active">{{ item }}</button></li>
         {% else %}
           <li><button name="{{ filter_name }}" value="{{ item }}" type="submit" class="dropdown-item">{{ item }}</button></li>
         {% endif %}
@@ -23,6 +22,10 @@
   </form>
 </div>
 <br>
+
+
+
+
 
 
 
