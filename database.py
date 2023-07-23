@@ -38,22 +38,11 @@ def load_course_from_db(course_code):
                 return result_dict
 
 def load_courselist_from_db(courselist_page_number):
-    filters = get_filter_from_db()
-    filter_conditions = []
-    filter_params = {}
-    for filter_key, filter_value in filters.items():
-        filter_param_name = f"filter_{filter_key}"
-        filter_conditions.append(f"{filter_key} = :{filter_param_name}")
-        filter_params[filter_param_name] = filter_value
-
-    filter_sql = " AND ".join(filter_conditions)
-
-    query = text(
-        f"SELECT * FROM (SELECT *, (ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1) DIV 3 + 1 AS pair_num FROM courses WHERE {filter_sql}) AS numbered_rows WHERE pair_num = :val;"
+    query = text("SELECT * FROM (SELECT *, (ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1) DIV 3 + 1 AS pair_num FROM courses) AS numbered_rows WHERE pair_num = :val;"
     )
 
     with engine.connect() as conn:
-        result = conn.execute(query, parameters={**filter_params, "val": courselist_page_number})
+        result = conn.execute(query, parameters={"val": courselist_page_number})
 
     courselist = []
     columns = result.keys()
@@ -63,22 +52,10 @@ def load_courselist_from_db(courselist_page_number):
     return courselist
 
 def get_max_courselist_pages():
-    filters = get_filter_from_db()  # Retrieve filter dictionary
-    filter_conditions = []
-    filter_params = {}
-    for filter_key, filter_value in filters.items():
-        filter_param_name = f"filter_{filter_key}"
-        filter_conditions.append(f"{filter_key} = :{filter_param_name}")
-        filter_params[filter_param_name] = filter_value
-
-    filter_sql = " AND ".join(filter_conditions)
-
-    query = text(
-        f"SELECT COUNT(*) FROM courses WHERE {filter_sql};"
-    )
+    query = text("SELECT COUNT(*) FROM courses;")
 
     with engine.connect() as conn:
-        result = conn.execute(query, parameters=filter_params)
+        result = conn.execute(query)
         total_rows = result.scalar()
 
     max_pages = math.floor((total_rows - 1) / 3) + 1
@@ -96,11 +73,16 @@ def get_rating_from_db(course_code):
 
 def get_filter_from_db():
     with engine.connect() as conn:
-      result = conn.execute(text("SELECT filter, filter_value FROM filters;"))
-      filters = result.fetchall()
-      filters_dict = {row[0]: row[1] for row in filters}
+      query = text("SELECT * FROM filters")
+      filters_db = conn.execute(query).fetchall()
 
-      return filters_dict
+      filters = {}
+      for filter_name, value, option in filters_db:
+        if filter_name not in filters:
+            filters[filter_name] = []
+        filters[filter_name].append((value, option))
+
+      return filters
 
 #Adding data to SQL
 def add_rating_to_db(course_code, data):
@@ -122,31 +104,10 @@ def add_rating_to_db(course_code, data):
             )
 
 def add_filter_to_db(filter_name, filter_value):
-    with engine.connect() as conn:
-        existing_filter = conn.execute(
-            text("SELECT filter_value FROM filters WHERE filter = :filter"), {"filter": filter_name})
-      
-        if existing_filter:
-            conn.execute(
-                text("UPDATE filters SET filter_value = :filter_value WHERE filter = :filter"),
-                {"filter": filter_name, "filter_value": filter_value}
-            )
-        else:
-            conn.execute(
-                text("INSERT INTO filters (filter, filter_value) VALUES (:filter, :filter_value)"),
-                {"filter": filter_name, "filter_value": filter_value}
-            )
-
-
-
-
-
-  
-  
-
-
-
-
-
-
-
+  with engine.connect() as conn:
+    
+    conn.execute(text("UPDATE filters SET current_value = 'no' WHERE filter_name = :name"), {"name": filter_name}
+                    )
+    
+    conn.execute(text("UPDATE filters SET current_value = 'yes' WHERE filter_name = :name AND filter_value = :value"), {"name": filter_name, "value": filter_value}
+                )

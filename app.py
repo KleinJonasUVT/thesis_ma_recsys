@@ -3,11 +3,6 @@ from database import load_courses_from_db, load_course_from_db, load_courselist_
 
 app = Flask(__name__)
 
-filters = {
-    'Degree': ['Bachelor', 'Master', 'Pre-master'],
-    'Block': [1, 2, 3, 4]
-}
-
 @app.route("/")
 def show_courselist_first():
   courselist = load_courselist_from_db('1')
@@ -19,12 +14,12 @@ def show_courselist_first():
     rating_db[course_code] = get_rating_from_db(course_code)
   
   next_page_number = 2
-  filters_dict = get_filter_from_db()
+  filters = get_filter_from_db()
   next_courselist = load_courselist_from_db(str(2))
   show_next_button = bool(next_courselist)
   courselist_page_number=1
   is_less_than_5 = int(courselist_page_number) < 5
-  return render_template('home.html', courselist=courselist, filters=filters, show_next_button=show_next_button, next_page = '2', max_pages=max_pages, courselist_page_number=courselist_page_number, is_less_than_5=is_less_than_5, rating_db = rating_db, filters_dict=filters_dict)
+  return render_template('home.html', courselist=courselist, show_next_button=show_next_button, next_page = '2', max_pages=max_pages, courselist_page_number=courselist_page_number, is_less_than_5=is_less_than_5, rating_db = rating_db, filters=filters)
 
 @app.route("/api/courses")
 def list_courses():
@@ -42,7 +37,7 @@ def show_courselist(courselist_page_number):
     rating_db[course_code] = get_rating_from_db(course_code)
     
   next_page = int(courselist_page_number) + 1
-  filters_dict = get_filter_from_db()
+  filters = get_filter_from_db()
   next_courselist = load_courselist_from_db(str(next_page))
   show_next_button = bool(next_courselist)
   prev_page = int(courselist_page_number) - 1
@@ -56,7 +51,7 @@ def show_courselist(courselist_page_number):
   if not courselist:
     return "Not Found", 404
   else:
-    return render_template('home.html', courselist=courselist, filters=filters, show_next_button=show_next_button, show_prev_button=show_prev_button, next_page=next_page, prev_page=prev_page, max_pages=max_pages, courselist_page_number=courselist_page_number, is_less_than_5=is_less_than_5, is_more_than_4=is_more_than_4, is_more_than_3_to_end=is_more_than_3_to_end, is_less_than_4_to_end=is_less_than_4_to_end, rating_db=rating_db, filters_dict=filters_dict)
+    return render_template('home.html', courselist=courselist, show_next_button=show_next_button, show_prev_button=show_prev_button, next_page=next_page, prev_page=prev_page, max_pages=max_pages, courselist_page_number=courselist_page_number, is_less_than_5=is_less_than_5, is_more_than_4=is_more_than_4, is_more_than_3_to_end=is_more_than_3_to_end, is_less_than_4_to_end=is_less_than_4_to_end, rating_db=rating_db, filters=filters)
 
 @app.route("/course/<course_code>")
 def show_course(course_code):
@@ -74,15 +69,12 @@ def rating_course(course_code):
     previous_page = request.referrer
     return redirect(previous_page)
 
-@app.route("/filter", methods=['POST'])
-def filter():
-    filter_name = request.form['filter_name']
-    filter_value = request.form[filter_name]
-    add_filter_to_db(filter_name, filter_value)
-    previous_page = request.referrer
-    return redirect(previous_page)
-
-#redirect(url_for('show_courselist_first'))
+@app.route("/filter/<filter_name>", methods=['post'])
+def filter(filter_name):
+  data = request.form
+  filter_value = data.get(filter_name)
+  add_filter_to_db(filter_name, filter_value)
+  return jsonify(data)
 
 if __name__ == "__main__":
   app.run(host='0.0.0.0', debug=True)
