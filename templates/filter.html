@@ -1,6 +1,5 @@
 <style>
   .dropdown-item-active {
-    background-color: #f8f9fa;
     font-weight: bold;
   }
 </style>
@@ -11,11 +10,14 @@
   <form action="/filter/{{filter_name}}" method="post">
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonLight{{ filter_name }}">
       {% for item in filter_values %}
+        {% if item[1] == 'yes' %}
+        <li><button name="{{ filter_name }}" value="{{ item[0] }}" type="submit" class="dropdown-item-active">{{ item[0] }}</button></li>
+        {% else %}
         <li><button name="{{ filter_name }}" value="{{ item[0] }}" type="submit" class="dropdown-item">{{ item[0] }}</button></li>
+        {% endif %}
       {% endfor %}
     </ul>
   </form>
-
 </div>
 <br>
 
