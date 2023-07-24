@@ -38,8 +38,38 @@ def load_course_from_db(course_code):
                 return result_dict
 
 def load_courselist_from_db(courselist_page_number):
-    query = text("SELECT * FROM (SELECT *, (ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1) DIV 3 + 1 AS pair_num FROM courses) AS numbered_rows WHERE pair_num = :val;"
-    )
+    query = text("SELECT * FROM filters WHERE current_value = 'yes'")
+
+    with engine.connect() as conn:
+        filters_db = conn.execute(query).fetchall()
+
+    current_filters = {}
+    for filter_name, value, option in filters_db:
+        if filter_name not in current_filters:
+            current_filters[filter_name] = []
+        current_filters[filter_name].append((value, option))
+
+    filter_conditions = []
+    for filter_name, filter_values in current_filters.items():
+        for value, option in filter_values:
+            # Modify the condition based on your table columns
+            condition = f"{filter_name} = '{value}'"
+            filter_conditions.append(condition)
+
+    where_clause = " AND ".join(filter_conditions)
+
+    query_template = """
+        SELECT *
+        FROM (
+            SELECT *,
+                   ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS row_num
+            FROM courses
+            WHERE {where_clause}
+        ) AS filtered_courses
+        WHERE (row_num - 1) DIV 3 + 1 = :val
+    """
+
+    query = text(query_template.format(where_clause=where_clause))
 
     with engine.connect() as conn:
         result = conn.execute(query, parameters={"val": courselist_page_number})
@@ -52,7 +82,29 @@ def load_courselist_from_db(courselist_page_number):
     return courselist
 
 def get_max_courselist_pages():
-    query = text("SELECT COUNT(*) FROM courses;")
+    query = text("SELECT * FROM filters WHERE current_value = 'yes'")
+
+    with engine.connect() as conn:
+        filters_db = conn.execute(query).fetchall()
+
+    current_filters = {}
+    for filter_name, value, option in filters_db:
+        if filter_name not in current_filters:
+            current_filters[filter_name] = []
+        current_filters[filter_name].append((value, option))
+
+    filter_conditions = []
+    for filter_name, filter_values in current_filters.items():
+        for value, option in filter_values:
+            # Modify the condition based on your table columns
+            condition = f"{filter_name} = '{value}'"
+            filter_conditions.append(condition)
+
+    where_clause = " AND ".join(filter_conditions)
+  
+    query_template = "SELECT COUNT(*) FROM courses WHERE {where_clause};"
+
+    query = text(query_template.format(where_clause=where_clause))
 
     with engine.connect() as conn:
         result = conn.execute(query)

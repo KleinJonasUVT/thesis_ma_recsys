@@ -74,7 +74,8 @@ def filter(filter_name):
   data = request.form
   filter_value = data.get(filter_name)
   add_filter_to_db(filter_name, filter_value)
-  return jsonify(data)
+  previous_page = request.referrer
+  return redirect(previous_page)
 
 if __name__ == "__main__":
   app.run(host='0.0.0.0', debug=True)
