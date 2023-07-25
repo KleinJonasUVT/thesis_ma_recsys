@@ -1,8 +1,3 @@
-<style>
-  .dropdown-item-active {
-    font-weight: bold;
-  }
-</style>
 <div class="dropdown" data-bs-theme="light">
   <button class="btn custom-button dropdown-toggle" type="button" id="dropdownMenuButtonLight{{ filter_name }}" data-bs-toggle="dropdown" aria-expanded="false">
     {{ filter_name }}
@@ -11,7 +6,7 @@
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonLight{{ filter_name }}">
       {% for item in filter_values %}
         {% if item[1] == 'yes' %}
-        <li><button name="{{ filter_name }}" value="{{ item[0] }}" type="submit" class="dropdown-item-active">{{ item[0] }}</button></li>
+        <li><button name="{{ filter_name }}" value="{{ item }}" type="submit" class="dropdown-item active">{{ item[0] }}</button></li>
         {% else %}
         <li><button name="{{ filter_name }}" value="{{ item[0] }}" type="submit" class="dropdown-item">{{ item[0] }}</button></li>
         {% endif %}
