@@ -39,11 +39,17 @@
     <div class="row">
       <div class="col-2">
         <aside>
-          <h5>Filters</h5>
-          <br>
-          {% for filter_name, filter_values in filters.items() %}
-            {% include 'filter.html' %}
-          {% endfor %}
+          <div class="row">
+            <h5>Filters</h5>
+            <br>
+          </div>
+          <div class="row">
+            {% for filter_name, filter_values in filters.items() %}
+            <div class="mb-3">
+              {% include 'filter.html' %}
+            </div>
+            {% endfor %}
+          </div>
         </aside>
       </div>
       

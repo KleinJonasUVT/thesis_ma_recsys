@@ -64,11 +64,16 @@ def load_courselist_from_db(courselist_page_number):
             SELECT *,
                    ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS row_num
             FROM courses
-            WHERE {where_clause}
+            {where_clause}
         ) AS filtered_courses
         WHERE (row_num - 1) DIV 3 + 1 = :val
     """
-
+    
+    if filter_conditions:
+        where_clause = "WHERE " + " AND ".join(filter_conditions)
+    else:
+        where_clause = ""
+    
     query = text(query_template.format(where_clause=where_clause))
 
     with engine.connect() as conn:
@@ -101,8 +106,11 @@ def get_max_courselist_pages():
             filter_conditions.append(condition)
 
     where_clause = " AND ".join(filter_conditions)
-  
-    query_template = "SELECT COUNT(*) FROM courses WHERE {where_clause};"
+
+    if filter_conditions:
+        query_template = "SELECT COUNT(*) FROM courses WHERE {where_clause};"
+    else:
+        query_template = "SELECT COUNT(*) FROM courses;"
 
     query = text(query_template.format(where_clause=where_clause))
 
