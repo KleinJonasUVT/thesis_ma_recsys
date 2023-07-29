@@ -144,6 +144,13 @@ def get_filter_from_db():
 
       return filters
 
+def remove_rating_from_db(course_code):
+    with engine.connect() as conn:
+        conn.execute(
+            text("DELETE FROM ratings WHERE course_code = :course_code"),
+            {"course_code": course_code}
+        )
+
 #Adding data to SQL
 def add_rating_to_db(course_code, data):
     with engine.connect() as conn:

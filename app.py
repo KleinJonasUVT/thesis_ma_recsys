@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request, redirect, url_for
-from database import load_courses_from_db, load_course_from_db, load_courselist_from_db, get_max_courselist_pages, add_rating_to_db, get_rating_from_db, add_filter_to_db, get_filter_from_db
+from database import load_courses_from_db, load_course_from_db, load_courselist_from_db, get_max_courselist_pages, add_rating_to_db, get_rating_from_db, add_filter_to_db, get_filter_from_db, remove_rating_from_db
 
 app = Flask(__name__)
 
@@ -68,6 +68,13 @@ def rating_course(course_code):
     add_rating_to_db(course_code, data)
     previous_page = request.referrer
     return redirect(previous_page)
+
+@app.route("/course/<course_code>/remove_rating", methods=['POST'])
+def remove_rating(course_code):
+    data = request.form
+    remove_rating_from_db(course_code)
+    previous_page = request.referrer
+    return jsonify(data)
 
 @app.route("/filter/<filter_name>", methods=['post'])
 def filter(filter_name):

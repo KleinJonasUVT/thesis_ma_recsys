@@ -7,7 +7,7 @@
   .rating:not(:checked) > label {
     float: right;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 21px;
     color: #666;
   }
 
@@ -37,45 +37,15 @@
     font-size: smaller;
     float: right;
   }
-
-  .item-5 {
-    text-decoration: none;
-    margin-right: 100px;
-    margin-left: 10px;
-    background: transparent;
-    box-shadow: none;
-    border: none;
-    box-sizing: border-box;
+  
+  .close-button {
+    margin-top: 6px;
+    padding: 2px 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
     cursor: pointer;
-    &:last-child {
-      margin-right: 0;
-    }
-    position: relative;
-    width: 30px;
-    height: 30px;
-    &:before, &:after {
-      content: "";
-      display: block;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      background-color: #000;
-      width: 50%;
-      height: 2px;
-      transition: height .2s ease-out;
-      border-radius: 3px;
-    }
-    &:before {
-      transform: translate(-50%, -50%) rotate(45deg);
-    }
-    &:after {
-      transform: translate(-50%, -50%) rotate(-45deg);
-    }
-    &:hover, &:focus {
-      &:before, &:after {
-        height: 4px;
-      }
-    }
+    float: right;
+    font-size: 12px;
   }
 </style>
 <div class="row">
@@ -87,8 +57,8 @@
           <p class="course-details">Course code: {{ course['course_code'] }}</p>
           <p class="course-details">Language: {{ course['language'] }}</p>
         </div>
-        <div class="col-6"> <!-- Use col-6 instead of col-4 to create more space for the rating and close button -->
-          <div class='row'>
+        <div class="col-6">
+          <div class="row align-items-center justify-content-end"> <!-- Modified line -->
             <form id="rating-form" action="/course/{{ course['course_code'] }}/rating" method="post">
               <div class="rating">
                 {% for star in range(5, 0, -1) %}
@@ -100,19 +70,20 @@
                   onchange="this.form.submit()"
                   {% if rating_db[course['course_code']] == star %}checked{% endif %}
                 >
-                <label for="star{{ star }}-{{ course['course_code'] }}" title="text"></label>
+                <label for="star{{ star }}-{{ course['course_code'] }}" title="Give a rating to this course"></label>
                 {% endfor %}
               </div>
             </form>
-          </div>
-          <div class='row'>
-            <div class="rating-details">
-              {% if rating_db[course['course_code']] > 1 %}
-              <p class="rating-message">You gave this course {{ rating_db[course['course_code']] }} stars!</p>
-              {% elif rating_db[course['course_code']] == 1 %}
-              <p class="rating-message">You gave this course {{ rating_db[course['course_code']] }} star!</p>
-              {% endif %}
-            </div>
+            {% if rating_db[course['course_code']] %}
+              <form id="remove-rating" action="/course/{{ course['course_code'] }}/remove_rating" method="post">
+                <div class="row">
+                  <div class="rating-details">
+                    <input type="hidden" name="rate" value="0">
+                    <button class="close-button" onchange="this.form.submit()">Remove rating</button>
+                  </div>
+                </div>
+              </form>
+            {% endif %}
           </div>
         </div>
       </div>
