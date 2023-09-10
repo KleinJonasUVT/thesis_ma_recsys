@@ -1,4 +1,6 @@
 # Thesis Marketing Analytics Recommendation Systems
+Welcome to the repository dedicated to the master thesis for the Marketing Analytics program at Tilburg University. This project, titled "Advancing Recommendation Systems: A State-of-the-Art Review and A/B Testing Evaluation,"  explores different recommendation systems and determine which one stands out in terms of performance. Within this repository, you'll find all the code that powers a web application built using Flask in Python. This application serves as a testing ground, implementing various recommendation algorithms to test their effectiveness. This repository will be the central place for all code, findings, and implementations. 
+
 ## Running this project
 
 ### Using Docker
